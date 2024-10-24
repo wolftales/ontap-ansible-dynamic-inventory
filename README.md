@@ -6,7 +6,7 @@ The `ontap-ansible-dynamic-inventory` project provides a dynamic inventory scrip
 
 NetApp's ActiveIQ Unified Manager is a powerful tool for monitoring and managing ONTAP storage systems. By leveraging its API, this project dynamically generates an inventory of ONTAP clusters and management IPs, which can be used by Ansible for configuration management, automation, and orchestration tasks.
 
-### Key Features
+## Features
 
 - **Dynamic Inventory Generation**: Automatically discover ONTAP clusters and management IPs from ActiveIQ Unified Manager.
 - **Automated Resource Discovery**: Simplify the management of ONTAP resources by dynamically updating the inventory.
@@ -27,13 +27,6 @@ Managing ONTAP resources manually can be time-consuming and error-prone. This pr
 - **Node Information**: Add support for detailed node information in the inventory.
 - **Extended API Coverage**: Utilize additional endpoints of the ActiveIQ Unified Manager API to provide more comprehensive inventory data.
 
-## Features
-
-- Dynamic inventory generation from ActiveIQ Unified Manager for ONTAP systems
-- Automated resource discovery
-- Seamless integration with Ansible playbooks
-- Enhanced error handling and logging
-
 ## Requirements
 
 - Python 3.x
@@ -51,35 +44,24 @@ Managing ONTAP resources manually can be time-consuming and error-prone. This pr
     pip install -r requirements.txt
     ```
 
-## Configuration
-
-Set the following environment variables for API credentials and configuration:
-```sh
-export API_USERNAME="your_username"
-export API_PASSWORD="your_password"
-export API_HOSTNAME="your_activeiq_hostname_or_ip"
-export API_ENDPOINT="/datacenter/cluster/clusters"  # Optional, defaults to /datacenter/cluster/clusters
-```
-
-## Testing
-
-Test script's ability to collect information from NetApp's ActiveIQ Unified Manager:
-```shell
-ansible-inventory -i ontap_inventory.py --list
-```
-
 ## Usage
 
 This script is used to dynamically generate an inventory for Ansible by collecting information from NetApp's ActiveIQ Unified Manager. This allows for automated discovery and management of ONTAP resources within your Ansible playbooks.
-1. Configure the inventory script by editing `inventory.ini`:
-    ```ini
-    [ontap]
-    hostname = your_ontap_hostname
-    username = your_username
-    password = your_password
+
+1. Ensure the required environment variables are set:
+    ```sh
+    export API_USERNAME="your_username"
+    export API_PASSWORD="your_password"
+    export API_HOSTNAME="your_activeiq_hostname_or_ip"
+    export API_ENDPOINT="/datacenter/cluster/clusters"  # Optional, defaults to /datacenter/cluster/clusters
     ```
 
-2. Run the Ansible playbook with the dynamic inventory:
+2. Test the script's ability to collect information from NetApp's ActiveIQ Unified Manager:
+    ```sh
+    ansible-inventory -i ontap_inventory.py --list
+    ```
+
+3. Run the Ansible playbook with the dynamic inventory:
     ```sh
     ansible-playbook -i ontap_inventory.py your_playbook.yml
     ```
@@ -90,7 +72,7 @@ Contributions are welcome! Please submit a pull request or open an issue to disc
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
 ## Acknowledgements
 
