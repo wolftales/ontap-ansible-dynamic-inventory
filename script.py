@@ -5,6 +5,7 @@ from requests.auth import HTTPBasicAuth
 import urllib3
 import json
 import os
+import sys
 import logging
 
 # Suppress InsecureRequestWarning from urllib3
@@ -14,34 +15,19 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Fetch API hostname and endpoint from environment variables
-hostname = os.getenv("API_HOSTNAME", "192.168.7.225")
-api_endpoint = os.getenv("API_ENDPOINT", "/datacenter/cluster/clusters")
-base_url = f"https://{hostname}/api"
-url = f"{base_url}{api_endpoint}"
-
-# Fetch credentials from environment variables
-username = os.getenv("API_USERNAME")
-password = os.getenv("API_PASSWORD")
-
-if not username or not password:
-    logger.error("API credentials are not set in environment variables.")
-    exit(1)
-
-# Fetch host data from API
-def get_hosts_from_api():
-    response = requests.get(url, auth=HTTPBasicAuth(username, password), verify=False)
-    
-    if response.status_code == 200:
+# Function to fetch host data from API
+def get_hosts_from_api(url, username, password):
+    try:
+        response = requests.get(url, auth=HTTPBasicAuth(username, password), verify=False)
+        response.raise_for_status()
         return response.json()
-    else:
-        print(f"Failed to retrieve data: {response.status_code}")
-        print(response.text)
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Failed to fetch data from API: {e}")
         return None
 
 # Function to create Ansible inventory structure
-def generate_inventory():
-    data = get_hosts_from_api()
+def generate_inventory(url, username, password):
+    data = get_hosts_from_api(url, username, password)
     if data is None:
         return {}
 
@@ -71,7 +57,26 @@ def generate_inventory():
 
     return inventory
 
-if __name__ == "__main__":
-    # Output the inventory in JSON format
-    inventory = generate_inventory()
+# Main function
+def main():
+    # Fetch API hostname and endpoint from environment variables
+    hostname = os.getenv("API_HOSTNAME", "192.168.7.225")
+    api_endpoint = os.getenv("API_ENDPOINT", "/datacenter/cluster/clusters")
+    base_url = f"https://{hostname}/api"
+    url = f"{base_url}{api_endpoint}"
+
+    # Fetch credentials from environment variables
+    username = os.getenv("API_USERNAME")
+    password = os.getenv("API_PASSWORD")
+
+    if not username or not password:
+        logger.error("API credentials are not set in environment variables.")
+        return 1
+
+    # Generate and print the inventory
+    inventory = generate_inventory(url, username, password)
     print(json.dumps(inventory, indent=2))
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
