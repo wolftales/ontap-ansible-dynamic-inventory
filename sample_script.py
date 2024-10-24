@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Sample script for dynamic inventory in Ansible
+# Source: Ansible Documentation (https://docs.ansible.com/ansible/latest/dev_guide/developing_inventory.html)
+
 import json
 
 def get_inventory():
@@ -22,16 +25,13 @@ def get_inventory():
         '_meta': {
             'hostvars': {
                 'host1': {
-                    'ansible_host': '192.168.1.10',
-                    'ansible_port': 22
+                    # Host-specific variables
                 },
                 'host2': {
-                    'ansible_host': '192.168.1.11',
-                    'ansible_port': 2222
+                    # Host-specific variables
                 },
                 'host3': {
-                    'ansible_host': 'ec2-3-123-456-789.compute.amazonaws.com',
-                    'ansible_port': 22
+                    # Host-specific variables
                 }
             }
         }
@@ -40,4 +40,4 @@ def get_inventory():
 
 if __name__ == "__main__":
     inventory = get_inventory()
-    print(json.dumps(inventory))
+    print(json.dumps(inventory, indent=2))
