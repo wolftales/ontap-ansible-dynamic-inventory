@@ -7,6 +7,7 @@ This repository provides a dynamic inventory script for Ansible to interact with
 - Dynamic inventory generation from ActiveIQ Unified Manager for ONTAP systems
 - Automated resource discovery
 - Seamless integration with Ansible playbooks
+- Enhanced error handling and logging
 
 ## Requirements
 
@@ -24,6 +25,23 @@ This repository provides a dynamic inventory script for Ansible to interact with
     ```sh
     pip install -r requirements.txt
     ```
+
+## Configuration
+
+Set the following environment variables for API credentials and configuration:
+```sh
+export API_USERNAME="your_username"
+export API_PASSWORD="your_password"
+export API_HOSTNAME="your_activeiq_hostname_or_ip"
+export API_ENDPOINT="/datacenter/cluster/clusters"  # Optional, defaults to /datacenter/cluster/clusters
+```
+
+## Testing
+
+Test script's ability to collect information from NetApp's ActiveIQ Unified Manager:
+```shell
+ansible-inventory -i ontap_inventory.py --list
+```
 
 ## Usage
 
