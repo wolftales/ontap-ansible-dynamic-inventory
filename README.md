@@ -60,6 +60,45 @@ This script is used to dynamically generate an inventory for Ansible by collecti
     ```sh
     ansible-inventory -i ontap_inventory.py --list
     ```
+    Example output:  
+
+    ```shell
+        ken@ubuntu:ontap-ansible-dynamic-inventory (main)$ ansible-inventory -i ontap_inventory.py --list
+    {
+        "_meta": {
+            "hostvars": {
+                "192.168.7.200": {
+                    "ansible_host": "192.168.7.200",
+                    "cluster_name": "sandbox",
+                    "location": "VSIM",
+                    "model": "SIMBOX",
+                    "uuid": "3dc7707a-84f7-11ef-a01d-005056a901c3",
+                    "version": "NetApp Release 9.15.1: Thu Jul 04 07:17:54 UTC 2024"
+                },
+                "192.168.7.240": {
+                    "ansible_host": "192.168.7.240",
+                    "cluster_name": "redshirt",
+                    "location": null,
+                    "model": "SIMBOX",
+                    "uuid": "edaf2c02-8f45-11ef-9211-005056a9dea0",
+                    "version": "NetApp Release 9.15.1: Thu Jul 04 07:17:54 UTC 2024"
+                }
+            }
+        },
+        "all": {
+            "children": [
+                "ungrouped",
+                "datacenter_clusters"
+            ]
+        },
+        "datacenter_clusters": {
+            "hosts": [
+                "192.168.7.240",
+                "192.168.7.200"
+            ]
+        }
+    }
+    ```
 
 3. Run the Ansible playbook with the dynamic inventory:
     ```sh
